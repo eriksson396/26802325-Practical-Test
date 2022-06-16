@@ -21,4 +21,16 @@ library(tidyverse)
 list.files('code/', full.names = T, recursive = T) %>% .[grepl('.R', .)] %>% as.list() %>% walk(~source(.))
 ```
 
+```{r}
+#fmxdat::make_project(Open = T)
+
+CHOSEN_LOCATION <- "C:/Users/Erik Schulte/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/"
+#fmxdat::make_project(FilePath = glue::glue("{CHOSEN_LOCATION}Solution/"), 
+#                     ProjNam = "___26802325")
+
+Texevier::create_template(directory = glue::glue("{CHOSEN_LOCATION}Solution/"), template_name = "Q1")
+Texevier::create_template_html(directory = glue::glue("{CHOSEN_LOCATION}Solution/"), template_name = "Q2")
+# Texevier::create_template(directory = glue::glue("{CHOSEN_LOCATION}EVS_Mock_Solution/"), template_name = "Q3")
+
+```
 
