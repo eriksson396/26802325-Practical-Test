@@ -13,8 +13,8 @@ gc() # garbage collection - It can be useful to call gc after a large object has
 ```
 
     ##          used (Mb) gc trigger (Mb) max used (Mb)
-    ## Ncells 444579 23.8     948302 50.7   643845 34.4
-    ## Vcells 792382  6.1    8388608 64.0  1649465 12.6
+    ## Ncells 444795 23.8     948920 50.7   643845 34.4
+    ## Vcells 793718  6.1    8388608 64.0  1649465 12.6
 
 ``` r
 library(tidyverse)
@@ -344,3 +344,156 @@ Relationship between height and rank of a tennis player.
 </div>
 
 # Question 4 Solution
+
+``` r
+library(readr)
+titles <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q4/data/netflix/titles.csv")
+```
+
+    ## Rows: 5806 Columns: 15
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr (8): id, title, type, description, age_certification, genres, production...
+    ## dbl (7): release_year, runtime, seasons, imdb_score, imdb_votes, tmdb_popula...
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+credits <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q4/data/netflix/credits.csv")
+```
+
+    ## Rows: 77213 Columns: 5
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr (4): id, name, character, role
+    ## dbl (1): person_id
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+#now matched id of both ....
+datasetnetflix <- merge(titles, credits, by="id")
+```
+
+Both datasets have a common identifier by which it can be knitted. I
+merge the two dataset and perform the following analysis. First, I
+present a table with some summary statistic about the newly merged
+dataset.
+
+``` r
+# summary(datasetnetflix)
+# summary
+# summary
+library(stargazer)
+
+datasetnetflix |> select(release_year, runtime, seasons, imdb_score, imdb_votes, tmdb_popularity, tmdb_score)|> stargazer(type = "text")
+```
+
+    ## 
+    ## =============================================================
+    ## Statistic         N       Mean     St. Dev.    Min     Max   
+    ## -------------------------------------------------------------
+    ## release_year    77,213 2,014.921     8.133    1,953   2,022  
+    ## runtime         77,213   96.494     35.540      0      251   
+    ## seasons         13,976   2.074       2.269      1      42    
+    ## imdb_score      72,937   6.466       1.106    1.500   9.500  
+    ## imdb_votes      72,850 58,719.810 155,392.800   5   2,268,288
+    ## tmdb_popularity 77,202   27.792     67.366    0.600 1,823.374
+    ## tmdb_score      76,093   6.685       1.026    1.000  10.000  
+    ## -------------------------------------------------------------
+
+Using the stargazer function we can see that the earliest movie was
+released in 1953 and the latest movies in 2022, while the medians of
+movies releases is 2018. The maximum runtime is 251 minutes and the mean
+run time for each movie is 96 minutes.
+
+The range of the seasons of the netflix data is 1 to 42.
+
+IMDB scores range from 1.5 to 9.5, the average rating of all the movies
+contained in the dataset is 6.466.
+
+For the tmb score, there the rating scale ranges from 1 to 10 and the
+average rating is slighly higher with 6.685.
+
+# What are good movies?
+
+``` r
+#data wrangling for plot 1
+directors <- subset(datasetnetflix, role == "DIRECTOR")
+#this gives a dataframe with movies with directors that got a rating of both scores above 8
+topdirector <- subset(datasetnetflix, role == "DIRECTOR" & imdb_score >= 8.4 & tmdb_score >= 8.4)
+```
+
+First, I looks at specific directors that did well, specifically those
+who got ratings from the Internet Movie Database and the TMDB score of
+higher than 8.4. 8.4 was choosen arbitrarily to have just the right
+amount of observations in the graph.
+
+``` r
+#plot the scores by director, calculate the average score by direcor
+#runtime by genre
+#rating by genre.
+
+  whatworks <-
+    plot1_netflix(topdirector, xaxis_size = 5, xaxis_rows = 3)
+    
+whatworks
+```
+
+<div class="figure" style="text-align: center">
+
+<img src="README_files/figure-markdown_github/unnamed-chunk-22-1.png" alt="Good movies.\label{Figure1}"  />
+<p class="caption">
+Good movies.
+</p>
+
+</div>
+
+We can see from graph 1 that there are a few directors that did really
+well. There is also a lot of variation in the runtime from very short
+shows with less than 30 minutes by the Director He Xiaofeng or rather
+long shows by Shin Won-ho which take more than 150 minutes. More of the
+good ratings are allocated towards shows rather than movies. I would
+recommend my superiors into looking into the works of the Directors I
+found.
+
+# What are bad movies?
+
+``` r
+#data wrangling bad movies
+bad_movies <- subset(datasetnetflix, imdb_score <= 4.4 & tmdb_score <= 4.4)
+#distinct(bad_movies)
+#bad_movies %>% group_by(id) %>% summarise_at(vars())
+```
+
+The data are also rich in what my superiors should not do. They should
+be careful with works that were produced by single countries only.
+There, seems to be especially bad movies and shows coming from India and
+the US, since the cumulative runtime exceeds 25000 hourse for India and
+15.000hours for the US.. However, these are most likely also two very
+high producing countries. It is also apparent from the bad movie data
+that most bad movies do not have an age certificaiton. Most are
+available for India (PG-13) and the US (R) and Japan (TV-PG).
+
+``` r
+#bad movies
+ whatworksnot <-
+    plot2_netflix(bad_movies, xaxis_size = 5, xaxis_rows = 3)
+    
+whatworksnot
+```
+
+<div class="figure" style="text-align: center">
+
+<img src="README_files/figure-markdown_github/unnamed-chunk-24-1.png" alt="Bad movies.\label{Figure2}"  />
+<p class="caption">
+Bad movies.
+</p>
+
+</div>
+
+Looking at the graph with the bad movies with low ratings we can see
+where they were produced. Interestingly, the worst movies were produced
+by single countries and not by co-production.

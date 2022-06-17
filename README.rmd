@@ -202,3 +202,78 @@ g
 
 
 # Question 4 Solution
+
+```{r}
+library(readr)
+titles <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q4/data/netflix/titles.csv")
+credits <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q4/data/netflix/credits.csv")
+
+#now matched id of both ....
+datasetnetflix <- merge(titles, credits, by="id")
+```
+
+
+Both datasets have a common identifier by which it can be knitted. I merge the two dataset and perform the following analysis. First, I present a table with some summary statistic about the newly merged dataset.
+
+
+```{r}
+# summary(datasetnetflix)
+# summary
+# summary
+library(stargazer)
+
+datasetnetflix |> select(release_year, runtime, seasons, imdb_score, imdb_votes, tmdb_popularity, tmdb_score)|> stargazer(type = "text")
+```
+
+Using the stargazer function we can see that the earliest movie was released in 1953 and the latest movies in 2022, while the medians of movies releases is 2018. The maximum runtime is 251 minutes and the mean run time for each movie is 96 minutes. 
+
+The range of the seasons of the netflix data is 1 to 42.
+
+IMDB scores range from 1.5 to 9.5, the average rating of all the movies contained in the dataset is 6.466.
+
+For the tmb score, there the rating scale ranges from 1 to 10 and the average rating is slighly higher with 6.685.
+
+# What are good movies?
+
+```{r}
+#data wrangling for plot 1
+directors <- subset(datasetnetflix, role == "DIRECTOR")
+#this gives a dataframe with movies with directors that got a rating of both scores above 8
+topdirector <- subset(datasetnetflix, role == "DIRECTOR" & imdb_score >= 8.4 & tmdb_score >= 8.4)
+```
+First, I looks at specific directors that did well, specifically those who got ratings from the Internet Movie Database and the TMDB score of higher than 8.4. 8.4 was choosen arbitrarily to have just the right amount of observations in the graph. 
+
+```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Good movies.\\label{Figure1}", fig.ext = 'png', fig.height = 5, fig.width = 7}
+#plot the scores by director, calculate the average score by direcor
+#runtime by genre
+#rating by genre.
+
+  whatworks <-
+    plot1_netflix(topdirector, xaxis_size = 5, xaxis_rows = 3)
+    
+whatworks
+```
+
+We can see from graph 1 that there are a few directors that did really well. There is also a lot of variation in the runtime from very short shows with less than 30 minutes by the Director He Xiaofeng or rather long shows by Shin Won-ho which take more than 150 minutes. More of the good ratings are allocated towards shows rather than movies. I would recommend my superiors into looking into the works of the Directors I found. 
+
+# What are bad movies?
+```{r}
+#data wrangling bad movies
+bad_movies <- subset(datasetnetflix, imdb_score <= 4.4 & tmdb_score <= 4.4)
+#distinct(bad_movies)
+#bad_movies %>% group_by(id) %>% summarise_at(vars())
+
+```
+The data are also rich in what my superiors should not do. They should be careful with works that were produced by single countries only. There, seems to be especially bad movies and shows coming from India and the US, since the cumulative runtime exceeds 25000 hourse for India and 15.000hours for the US.. However, these are most likely also two very high producing countries. It is also apparent from the bad movie data that most bad movies do not have an age certificaiton. Most are available for India (PG-13) and the US (R) and Japan (TV-PG).
+
+
+```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Bad movies.\\label{Figure2}", fig.ext = 'png', fig.height = 5, fig.width = 7}
+#bad movies
+ whatworksnot <-
+    plot2_netflix(bad_movies, xaxis_size = 5, xaxis_rows = 3)
+    
+whatworksnot
+
+```
+
+Looking at the graph with the bad movies with low ratings we can see where they were produced. Interestingly, the worst movies were produced by single countries and not by co-production.
