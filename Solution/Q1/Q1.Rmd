@@ -46,8 +46,8 @@ library(dplyr)
 # Asia <- subset(owid_data, iso_code == "OWID_ASI")
 # Europe <- subset(owid_data, iso_code == "OWID_EUR")
 # North_America <- subset(owid_data, iso_code == "OWID_NAM")
-
-continents <- owid_data[owid_data$iso_code %in% c("OWID_AFR", "OWID_ASI", "OWID_EUR", "OWID_NAM", "OWID_SAM"),] 
+# 
+# continents <- owid_data[owid_data$iso_code %in% c("OWID_AFR", "OWID_ASI", "OWID_EUR", "OWID_NAM", "OWID_SAM"),] 
 #check class of the variable... and make date and date class
 #str(continents)
 #continents <- continents |> mutate(across(contains('date'), ymd))
@@ -72,8 +72,8 @@ We can further see that this is also reflected in the deaths per region Africa i
 
 
 ```{r}
-summary(owid_data$female_smokers)
-summary(owid_data$aged_65_older)
+# summary(owid_data$female_smokers)
+# summary(owid_data$aged_65_older)
 ```
 
 
@@ -83,9 +83,9 @@ First, of all we not that theere is very little data on ICU admissions and patie
 # <- owid_data[owid_data$iso_code %in% c("OWID_AFR", "OWID_ASI", "OWID_EUR", "OWID_NAM", "OWID_SAM"),] 
 #no data available for OWID continents...
 ###add lagged ICU admissions
-summary(owid_data$icu_patients) 
-summary(owid_data$weekly_icu_admissions_per_million)
-unique(owid_data$icu_patients)
+# summary(owid_data$icu_patients) 
+# summary(owid_data$weekly_icu_admissions_per_million)
+# unique(owid_data$icu_patients)
 
 ##regressions does not work
 #regressions <- lm(formuala = lagged_ICU_patients ~ hospital_beds_per_thousand, data = owid_data)

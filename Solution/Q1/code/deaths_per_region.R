@@ -1,5 +1,6 @@
 deaths_per_region <- function(continents, xaxis_size = 5, xaxis_rows = 3){
 
+continents <- owid_data[owid_data$iso_code %in% c("OWID_AFR", "OWID_ASI", "OWID_EUR", "OWID_NAM", "OWID_SAM"),]
 continents <- continents |> mutate(across(contains('date'), ymd))
 
     library(scales)

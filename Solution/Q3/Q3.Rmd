@@ -38,7 +38,11 @@ datcolat1 <- rename(datcolat1, player_id = player)
 playerranking <- merge(datcolat1,datcolatplayers,by="player_id")
 
 #datcolat2 <- Data_Collating(Datroot = "data/Tennis_single_atp/")   
-
+library(readr)
+atp_matches_2000 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2000.csv")
+View(atp_matches_2000)
+atp_matches_2022 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2022.csv")
+View(atp_matches_2022)
 
 
 ####atp tournaments...
@@ -56,3 +60,37 @@ The great function \textit{Data Collating} does not work for the whole data fold
 Run `rlang::last_error()` to see where the error occurred."
 
 Therefore, I tried to apply to parts of the csv files that may have a similar internal structure. Indeed, it works for the ranking files which also have a player id variable. The player csv file, which contains more than 50.000 tennis players with id's can then be merged with the ranking, which I did.
+
+
+
+```{r}
+library(stargazer)
+
+playerranking |> select(height, hand, ioc)|> stargazer(type = "text")
+```
+The average height of all players (ca. 1mio different tennis players) in the data frame is 1.8398m. The smallest is 1.45m and the tallest is 2.11m.
+
+```{r}
+library(stargazer)
+
+atp_matches_2022 |> select(winner_ht)|> stargazer(type = "text")
+```
+
+```{r}
+#rename matching variable
+atp_matches_2022 <- rename(atp_matches_2022, player_id = winner_id)
+
+comparison_winners_2022 <- merge(playerranking,atp_matches_2022,by="player_id")
+
+#comparison_loosers_2022 <- merge(playerranking, atp_matches_2022)
+```
+I read in the data of atp matches 2022 and was able to merge the player id with my "playerranking" dataframe. With this one could compare characteristics of successful tennis players.
+
+```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Relationship between height and rank of a tennis player.\\label{Figure1}", fig.ext = 'png', fig.height = 5, fig.width = 7}
+#make lineplot of height and rank
+
+g <-
+  tennis_success(playerranking, xaxis_size = 5, xaxis_rows = 3)
+    
+g
+```
