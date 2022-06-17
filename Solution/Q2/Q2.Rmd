@@ -27,178 +27,117 @@ abstract: |
 
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
-pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 5)
+
+options(dplyr.summarise.inform=F)
+
+if(!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+# Source Question 1's code too ()for plot_order function) - note ..// here means go up one level from current folder
+list.files('..//Question1/code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+
+# Data loading:
+library(readr)
+london_weather <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q2/data/London/london_weather.csv")
+View(london_weather)
+
 ```
 
-\newpage
 
-# Introduction {-}
+# Overview
 
-References are to be made as follows: [@fama1997] and @grinold2000 Such authors could also be referenced in brackets [@grinold2000] and together [@fama1997 \& @grinold2000]. Source the reference code from scholar.google.com by clicking on ``cite'' below article name. Then select BibTeX at the bottom of the Cite window, and proceed to copy and paste this code into your ref.bib file, located in the directory's Tex folder. Open this file in Rstudio for ease of management, else open it in your preferred Tex environment. Add and manage your article details here for simplicity - once saved, it will self-adjust in your paper.
+In this report, we look at what Sommeliers prefer globally, and specifically the frequency with which references to fruity flavours are made.
 
-> I suggest renaming the top line after \@article, as done in the template ref.bib file, to something more intuitive for you to remember. Do not change the rest of the code. Also, be mindful of the fact that bib references from google scholar may at times be incorrect. Reference Latex forums for correct bibtex notation.
+Important note - some of the chunks take long to build. You can add cache=TRUE to the top part of a chunk - which means unless you adjust the chunk's code in any way, it will save the output and load it quickly. This makes building your pdf quicker.
 
-Writing in Rmarkdown is surprizingly easy - see [this website](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) cheatsheet for a summary on writing Rmd writing tips.
 
-# Data  {-}
+We will also consider the local wine reviews from two prominent critics.
 
-Notice how I used the curly brackets and dash to remove the numbering of the data section.
+### Fruit reference count
 
-Discussion of data should be thorough with a table of statistics and ideally a figure.
+In order to get insight into how often fruits are mentioned in reviews, and also which fruits are mentioned most - we collated a list of fruits and sought to identify the ....
 
-In your tempalte folder, you will find a Data and a Code folder. In order to keep your data files neat, store all of them in your Data folder. Also, I strongly suggest keeping this Rmd file for writing and executing commands, not writing out long pieces of data-wrangling. In the example below, I simply create a ggplot template for scatter plot consistency. I suggest keeping all your data in a data folder.
+We see that Plums are most referenced, with critics in Spain most regularly referencing fruits in their reviews:
 
-<!-- The following is a code chunk. It must have its own unique name (after the r), or no name. After the comma follows commands for R which are self-explanatory. By default, the code and messages will not be printed in your pdf, just the output: -->
+```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "References to Fruits by Sommeliers\\label{Figure1}", fig.ext = 'png', fig.height = 5, fig.width = 7}
 
-```{r }
-
-  # This is just a random plot to show you a plot. This is done if the getwd() does not point to your Template's directory.
-  # Set WD below to your project's working directory.
-
-  g <-
-  ggplot(data = mtcars) +
-  geom_point(aes(x = disp, y = hp, color = cyl)) +
-  theme_bw() +
-  # theme(legend.position = "none") +
-  theme(plot.title = element_text(size = 10)) +
-  theme(axis.title = element_text(size = 10),
-        axis.title.x = element_text()) +
-  labs(y = "y-axis", x = "x-axis", title = "Some amazing plot")
-
+# Count fruit references, by mapping the Fruit_extractor function across the different fruitlist 
+# Remember ~ before function:
+fruit_count <- froots %>% map_df(~Fruit_extractor(dff_adj, froots = .))
+g <- First_fruits_plot(fruit_count, xaxis_rows = 2, xaxis_size = 5)
 g
-
-```
-
-
-
-
-
-#  Methodology \label{Meth} {-}
-
-## Subsection {-}
-Ideally do not overuse subsections. It equates to bad writing.^[This is an example of a footnote by the way. Something that should also not be overused.]
-
-## Math section {-}
-
-Equations should be written as such:
-
-\begin{align}
-\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \label{eq1} \\
-\int_{x = 1}^{\infty}x_{i} = 1 \notag
-\end{align}
-
-If you would like to see the equations as you type in Rmarkdown, use $ symbols instead (see this for yourself by adjusted the equation):
-
-$$
-\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \\
-\int_{x = 1}^{\infty}x_{i} = 1
-$$
-
-Note again the reference to equation \ref{eq1}. Writing nice math requires practice. Note I used a forward slashes to make a space in the equations. I can also align equations using  __\&__, and set to numbering only the first line. Now I will have to type ``begin equation'' which is a native \LaTeX command. Here follows a more complicated equation:
-
-
-\begin{align}
-	y_t &= c + B(L) y_{t-1} + e_t   \label{eq2}    \\ \notag
-	e_t &= H_t^{1/2}  z_t ; \quad z_t \sim  N(0,I_N) \quad \& \quad H_t = D_tR_tD_t \\ \notag
-		D_t^2 &= {\sigma_{1,t}, \dots, \sigma_{N,t}}   \\ \notag
-		\sigma_{i,t}^2 &= \gamma_i+\kappa_{i,t}  v_{i, t-1}^2 +\eta_i  \sigma_{i, t-1}^2, \quad \forall i \\ \notag
-		R_{t, i, j} &= {diag(Q_{t, i, j}}^{-1}) . Q_{t, i, j} . diag(Q_{t, i, j}^{-1})  \\ \notag
-		Q_{t, i, j} &= (1-\alpha-\beta)  \bar{Q} + \alpha  z_t  z_t'  + \beta  Q_{t, i, j} \notag
-\end{align}
-
-Note that in \ref{eq2} I have aligned the equations by the equal signs. I also want only one tag, and I create spaces using ``quads''.
-
-See if you can figure out how to do complex math using the two examples provided in \ref{eq1} and \ref{eq2}.
-
-<!-- $$ -->
-<!-- This is a commented out section in the writing part. -->
-<!-- Comments are created by highlighting text, amnd pressing CTL+C -->
-<!-- \\begin{align} -->
-<!-- \\beta = \\alpha^2 -->
-<!-- \end{align} -->
-<!-- $$ -->
-
-## Results {-}
-
-Tables can be included as follows. Use the _xtable_ (or kable) package for tables. Table placement = H implies Latex tries to place the table Here, and not on a new page (there are, however, very many ways to skin this cat. Luckily there are many forums online!).
-
-```{r table-1, echo=TRUE, message=FALSE, warning=FALSE, results="asis"}
-library(knitr)
-library(kableExtra)
-
-data <- mtcars[1:5,] %>% tibble::as_tibble()
-
-table <- kable(data, row.names = TRUE,
-      caption = 'Table with kable() and kablestyling()',
-      format = "html", booktabs = T) %>%
-        kable_styling(full_width = T,
-                      latex_options = c("striped",
-                                        "scale_down",
-                                        "HOLD_position"),
-                      font_size = 13)
-table
-```
-
-To reference calculations __in text__, _do this:_ From table \@ref(tab:table-1) we see the average value of mpg is `r mean(mtcars[1:5,]$mpg)`. Notice the use of table-2 in the chunk name. That's the good stuff.
-
-\newpage
-
-
-## Model summary
-
-
-Check [this](https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html) link out for more. Note this package also plays nicely with gt, kableExtra, etc.
-
-```{r}
-
-library(modelsummary);library(gt)
-
-# modelsummary works well with gt:
-
-Tab <-
-
-datasummary_skim(swiss,
-type="numeric",
- histogram=T,
- title = "Summary: Numeric variables", output = "gt") %>%
-
-        # column labels
-    tab_spanner(label = 'Statistics', columns = c("Mean", "SD")) %>%
-    tab_spanner(label = 'Quantiles', columns = starts_with("P")) %>%
-    # footnote
-    tab_footnote(footnote = md("A very **important** Footnote."),
-                 locations = cells_body(rows = 3, columns = 1)) %>%
-
-    tab_options(data_row.padding = px(4),table.width = pct(60),
-            column_labels.font.size = pct(100),
-            column_labels.vlines.width = 1, table.font.size = pct(60))
-
-Tab
 ```
 
 
 
 ```{r}
+# grepl needs "|", e.g. grepl("X|Y|Z", string)
+collapsed_fruitlist <- paste(Fruitlist$Fruits, collapse = "|")
 
-datasummary_correlation(mtcars)
+N_Refs_Fruit <- dff_adj %>% filter(!country %in% "Spain") %>% summarise(N = sum(grepl( collapsed_fruitlist, description))/ n()) %>% pull(N)
+
+N_Refs_Fruit_spain <- dff_adj %>% filter(country %in% "Spain") %>% summarise(N = sum(grepl( collapsed_fruitlist, description))/ n()) %>% pull(N)
 
 ```
 
+For the following, I used my discretion and added some further insight into the fruit referncing exercise. This could've been a plot, but let's practice referencing in text.
 
-# References {-}
+Spanish wines have far greater references to fruit, at `r round(N_Refs_Fruit_spain*100, 3)`%  of references mentioning fruits, compared to 
+`r round(N_Refs_Fruit*100, 2)`% of reviews for `r glue::glue_collapse( CountryList[!grepl("Spain", CountryList)], sep = ", ", last = " and ")`.
 
-<div id="refs"></div>
+### Referencing certain terms
+
+Some text some text some text
+
+Here is the table I asked for. Carefully note the code for doing this. I commented out some code and added the Tab_Span_Page function for if you were using Texevier.
+
+Texevier's tables can be more involved as it loads various Latex packages to make nicer tables. For other Latex templates, you may not be able to produce similar tables - so for this we stick to plain old xtable - but take note of my commented out suggestions.
+
+```{r, results = 'asis'}
+Term_refs_table(dff_adj)
+
+```
+
+Of course, you could do more with Table \ref{tab1}, but I just want to get you started above.
 
 
-# Appendix {-}
+Lastly, let's look at South Africa in a new section.
 
-## Appendix A {-}
+# South Africa
 
-Some appendix information here
+```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Local Wine Reviews: Top Wineries locally.\\label{Figure2}", fig.ext = 'png', fig.height = 5, fig.width = 7}
 
-## Appendix B {-}
+Tasters <- c( "Lauren Buzzeo" , "Susan Kostrzewa")
+df_SA <-
+    dff %>% filter(country %in% "South Africa", price > 50, taster_name %in% Tasters)
 
+gg <- Top_5_Wineries_SA_Plot(df_SA, Tasters)
+gg
+```
+
+From Figure \ref{Figure2}, note the most preferred wineries. You can discuss a bit further here.
+
+```{r}
+Corr <- 
+df_SA %>% filter(price > 10) %>% 
+  group_by(taster_name) %>% summarise(Corr = cor(price, points, method = "spearman", use = "pairwise.complete.obs"))
+
+```
+
+In terms of correlations, note the correlations between prices and reviews for Lauren Buzzeo (`r Corr %>% slice(1) %>% pull(Corr) %>% round(.,3)*100`%) and Susan Kostrzewa (`r Corr %>% slice(2) %>% pull(Corr) %>% round(.,3)*100`%).
+
+
+We can further run regressions on what determines determines points based on our dataset. You can now add a few sentences describing this a bit.
+
+```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Local point determinants.\\label{Figure3}", fig.ext = 'png', fig.height = 5, fig.width = 7}
+
+Regression_Plot(df_SA)
+
+```
+
+Figure \ref{Figure3} can be discussed here in more detail.
 
 
