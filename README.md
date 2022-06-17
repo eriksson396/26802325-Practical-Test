@@ -13,8 +13,8 @@ gc() # garbage collection - It can be useful to call gc after a large object has
 ```
 
     ##          used (Mb) gc trigger (Mb) max used (Mb)
-    ## Ncells 444795 23.8     948920 50.7   643845 34.4
-    ## Vcells 793718  6.1    8388608 64.0  1649465 12.6
+    ## Ncells 444797 23.8     948925 50.7   643845 34.4
+    ## Vcells 793752  6.1    8388608 64.0  1649465 12.6
 
 ``` r
 library(tidyverse)
@@ -66,6 +66,8 @@ gg <- cases_per_region(continents,  xaxis_size = 5, xaxis_rows = 3)
 gg
 ```
 
+![title](Images/cases_region.png)
+
 We can see that as of this week Africa had by far the fewest total cases
 compared to the other continents in the dataframe. Less than 15 Million
 COVID cases, where as Other regions like the US and Europe and Asia had
@@ -78,10 +80,11 @@ ggg <- deaths_per_region(continents,  xaxis_size = 5, xaxis_rows = 3)
 ggg
 ```
 
-We can further see that this is also reflected in the deaths per region
-Africa is the only continent with less than 500,000 deaths related to
-COvid while all other continents had at least 1 Million so far. There is
-definetely a corrleation between cases and total deaths in the regions.
+![title](Images/deaths_region.png) We can further see that this is also
+reflected in the deaths per region Africa is the only continent with
+less than 500,000 deaths related to COvid while all other continents had
+at least 1 Million so far. There is definetely a corrleation between
+cases and total deaths in the regions.
 
 ``` r
 # summary(owid_data$female_smokers)
