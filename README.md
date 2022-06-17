@@ -1,11 +1,10 @@
-# Purpose
+# Data Science: Practical Test
 
-Purpose of this work folder.
-
-Ideally store a minimum working example data set in data folder.
-
-Add binary files in bin, and closed R functions in code. Human Readable
-settings files (e.g. csv) should be placed in settings/
+This is the outline of my solution for the data science practical. This
+file will walk through the codes and graphs. However, the single output
+files (html and pdfs) can be found in the Solution folder under Q1-Q4.
+Under images I saved my two main plots for Question 1, as there was a
+knitting problem. Please Check the images folder for the first task.
 
 ``` r
 #rm(list = ls()) # Clean your environment:
@@ -13,8 +12,8 @@ gc() # garbage collection - It can be useful to call gc after a large object has
 ```
 
     ##          used (Mb) gc trigger (Mb) max used (Mb)
-    ## Ncells 444797 23.8     948925 50.7   643845 34.4
-    ## Vcells 793768  6.1    8388608 64.0  1649465 12.6
+    ## Ncells 444816 23.8     948980 50.7   643845 34.4
+    ## Vcells 793906  6.1    8388608 64.0  1649465 12.6
 
 ``` r
 library(tidyverse)
@@ -30,6 +29,17 @@ library(tidyverse)
     ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
+
+``` r
+library(stargazer)
+```
+
+    ## 
+    ## Please cite as:
+
+    ##  Hlavac, Marek (2022). stargazer: Well-Formatted Regression and Summary Statistics Tables.
+
+    ##  R package version 5.2.3. https://CRAN.R-project.org/package=stargazer
 
 ``` r
 list.files('code/', full.names = T, recursive = T) %>% .[grepl('.R', .)] %>% as.list() %>% walk(~source(.))
@@ -110,18 +120,8 @@ shows.
 
 ``` r
 # Data loading:
-library(readr)
-library(lubridate)
-```
-
-    ## 
-    ## Attache Paket: 'lubridate'
-
-    ## Die folgenden Objekte sind maskiert von 'package:base':
-    ## 
-    ##     date, intersect, setdiff, union
-
-``` r
+# library(readr)
+# library(lubridate)
 london_weather <- read_csv("data/Prac2022/London/london_weather.csv", col_types = cols(date = col_date(format = "%Y%m%d")))
 ```
 
@@ -129,18 +129,8 @@ london_weather <- read_csv("data/Prac2022/London/london_weather.csv", col_types 
 
 ``` r
 #summary(london_weather)
-library(stargazer)
-```
-
-    ## 
-    ## Please cite as:
-
-    ##  Hlavac, Marek (2022). stargazer: Well-Formatted Regression and Summary Statistics Tables.
-
-    ##  R package version 5.2.3. https://CRAN.R-project.org/package=stargazer
-
-``` r
-library(dplyr)
+#library(stargazer)
+# library(dplyr)
 london_weather |> select(cloud_cover, sunshine, global_radiation, max_temp, mean_temp, min_temp, precipitation, pressure, snow_depth)|> stargazer(type = "text")
 ```
 
@@ -174,7 +164,7 @@ Average Temperature
 
 </div>
 
-##Sun
+## Sun
 
 ``` r
 g2 <- plot_sunshine(london_weather)
@@ -192,7 +182,7 @@ Average Sunshine
 
 </div>
 
-##Rain
+## Rain
 
 ``` r
 g3 <- plot_avg_precipitation(london_weather)
@@ -210,7 +200,7 @@ Average rainfall
 
 </div>
 
-##Clouds
+## Clouds
 
 ``` r
 g4 <- plot_cloudy(london_weather)
@@ -244,7 +234,7 @@ datcolat1 <- rename(datcolat1, player_id = player)
 playerranking <- merge(datcolat1,datcolatplayers,by="player_id")
 
 #datcolat2 <- Data_Collating(Datroot = "data/Tennis_single_atp/")   
-library(readr)
+# library(readr)
 atp_matches_2000 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2000.csv")
 ```
 
@@ -277,10 +267,11 @@ View(atp_matches_2022)
 
 ## Overview
 
-The great function does not work for the whole data folder due to the
-error message: “Error in `bind_rows()`: ! Can’t combine `winner_seed`
-<double> and `winner_seed` <character>. Run `rlang::last_error()` to see
-where the error occurred.”
+The great function Data Collating (which was kindly provided in the mock
+exam) does not work for the whole data folder due to the error message:
+“Error in `bind_rows()`: ! Can’t combine `winner_seed` <double> and
+`winner_seed` <character>. Run `rlang::last_error()` to see where the
+error occurred.”
 
 Therefore, I tried to apply to parts of the csv files that may have a
 similar internal structure. Indeed, it works for the ranking files which
@@ -289,7 +280,7 @@ than 50.000 tennis players with id’s can then be merged with the
 ranking, which I did.
 
 ``` r
-library(stargazer)
+# library(stargazer)
 
 playerranking |> select(height, hand, ioc)|> stargazer(type = "text")
 ```
@@ -306,7 +297,7 @@ the data frame is 1.8398m. The smallest is 1.45m and the tallest is
 2.11m.
 
 ``` r
-library(stargazer)
+# library(stargazer)
 
 atp_matches_2022 |> select(winner_ht)|> stargazer(type = "text")
 ```
@@ -350,7 +341,7 @@ Relationship between height and rank of a tennis player.
 # Question 4 Solution
 
 ``` r
-library(readr)
+# library(readr)
 titles <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q4/data/netflix/titles.csv")
 ```
 
@@ -390,7 +381,7 @@ dataset.
 # summary(datasetnetflix)
 # summary
 # summary
-library(stargazer)
+# library(stargazer)
 
 datasetnetflix |> select(release_year, runtime, seasons, imdb_score, imdb_votes, tmdb_popularity, tmdb_score)|> stargazer(type = "text")
 ```
@@ -475,8 +466,8 @@ bad_movies <- subset(datasetnetflix, imdb_score <= 4.4 & tmdb_score <= 4.4)
 The data are also rich in what my superiors should not do. They should
 be careful with works that were produced by single countries only.
 There, seems to be especially bad movies and shows coming from India and
-the US, since the cumulative runtime exceeds 25000 hourse for India and
-15.000hours for the US.. However, these are most likely also two very
+the US, since the cumulative runtime exceeds 25000 hours for India and
+15.000 hours for the US.. However, these are most likely also two very
 high producing countries. It is also apparent from the bad movie data
 that most bad movies do not have an age certificaiton. Most are
 available for India (PG-13) and the US (R) and Japan (TV-PG).
@@ -500,4 +491,6 @@ Bad movies.
 
 Looking at the graph with the bad movies with low ratings we can see
 where they were produced. Interestingly, the worst movies were produced
-by single countries and not by co-production.
+by single countries and not by co-productions.
+
+Thank you very much for reading the report. Best, EVS

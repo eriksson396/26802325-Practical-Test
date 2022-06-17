@@ -4,13 +4,10 @@ output:
     variant: markdown_github
 ---
 
-# Purpose
+# Data Science: Practical Test
 
-Purpose of this work folder.
-
-Ideally store a minimum working example data set in data folder.
-
-Add binary files in bin, and closed R functions in code. Human Readable settings files (e.g. csv) should be placed in settings/
+This is the outline of my solution for the data science practical. This file will walk through the codes and graphs. However, the single output files (html and pdfs) can be found in the Solution folder under Q1-Q4. 
+Under images I saved my two main plots for Question 1, as there was a knitting problem. Please Check the images folder for the first task.
 
 
 ```{r}
@@ -18,6 +15,7 @@ Add binary files in bin, and closed R functions in code. Human Readable settings
 #rm(list = ls()) # Clean your environment:
 gc() # garbage collection - It can be useful to call gc after a large object has been removed, as this may prompt R to return memory to the operating system.
 library(tidyverse)
+library(stargazer)
 list.files('code/', full.names = T, recursive = T) %>% .[grepl('.R', .)] %>% as.list() %>% walk(~source(.))
 ```
 
@@ -91,8 +89,8 @@ First, of all we not that theere is very little data on ICU admissions and patie
 # Question 2 Solution
 ```{r}
 # Data loading:
-library(readr)
-library(lubridate)
+# library(readr)
+# library(lubridate)
 london_weather <- read_csv("data/Prac2022/London/london_weather.csv", col_types = cols(date = col_date(format = "%Y%m%d")))
 
 ```
@@ -101,8 +99,8 @@ london_weather <- read_csv("data/Prac2022/London/london_weather.csv", col_types 
 # Overview and summarising table 
 ```{r}
 #summary(london_weather)
-library(stargazer)
-library(dplyr)
+#library(stargazer)
+# library(dplyr)
 london_weather |> select(cloud_cover, sunshine, global_radiation, max_temp, mean_temp, min_temp, precipitation, pressure, snow_depth)|> stargazer(type = "text")
 ```
 The table created by stargazer package shows the summary statistics of the london weather data. The mean temperature is 11.48 degrees celsius for example and precipitation is 1.66mm per day. On average there are 4.35 sunshine hours per day.
@@ -116,21 +114,21 @@ The table created by stargazer package shows the summary statistics of the londo
 g1 <- plot_avg_temp(london_weather)
 g1
 ```
-##Sun
+## Sun
 ```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Average Sunshine\\label{Figure2}", fig.ext = 'png', fig.height = 5, fig.width = 7}
 
 g2 <- plot_sunshine(london_weather)
 g2
 ```
 
-##Rain
+## Rain
 ```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Average rainfall\\label{Figure3}", fig.ext = 'png', fig.height = 5, fig.width = 7}
 
 g3 <- plot_avg_precipitation(london_weather)
 g3
 ```
 
-##Clouds
+## Clouds
 ```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Average Cloud COver\\label{Figure2}", fig.ext = 'png', fig.height = 5, fig.width = 7}
 
 g4 <- plot_cloudy(london_weather)
@@ -154,7 +152,7 @@ datcolat1 <- rename(datcolat1, player_id = player)
 playerranking <- merge(datcolat1,datcolatplayers,by="player_id")
 
 #datcolat2 <- Data_Collating(Datroot = "data/Tennis_single_atp/")   
-library(readr)
+# library(readr)
 atp_matches_2000 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2000.csv")
 View(atp_matches_2000)
 atp_matches_2022 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2022.csv")
@@ -164,23 +162,22 @@ View(atp_matches_2022)
 ## Overview
 
 
-The great function \textit{Data Collating} does not work for the whole data folder due to the error message: "Error in `bind_rows()`:
+The great function Data Collating (which was kindly provided in the mock exam) does not work for the whole data folder due to the error message: "Error in `bind_rows()`:
 ! Can't combine `winner_seed` <double> and `winner_seed` <character>.
 Run `rlang::last_error()` to see where the error occurred."
 
 Therefore, I tried to apply to parts of the csv files that may have a similar internal structure. Indeed, it works for the ranking files which also have a player id variable. The player csv file, which contains more than 50.000 tennis players with id's can then be merged with the ranking, which I did.
 
 
-
 ```{r}
-library(stargazer)
+# library(stargazer)
 
 playerranking |> select(height, hand, ioc)|> stargazer(type = "text")
 ```
 The average height of all players (ca. 1mio different tennis players) in the data frame is 1.8398m. The smallest is 1.45m and the tallest is 2.11m.
 
 ```{r}
-library(stargazer)
+# library(stargazer)
 
 atp_matches_2022 |> select(winner_ht)|> stargazer(type = "text")
 ```
@@ -209,7 +206,7 @@ g
 # Question 4 Solution
 
 ```{r}
-library(readr)
+# library(readr)
 titles <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q4/data/netflix/titles.csv")
 credits <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q4/data/netflix/credits.csv")
 
@@ -225,7 +222,7 @@ Both datasets have a common identifier by which it can be knitted. I merge the t
 # summary(datasetnetflix)
 # summary
 # summary
-library(stargazer)
+# library(stargazer)
 
 datasetnetflix |> select(release_year, runtime, seasons, imdb_score, imdb_votes, tmdb_popularity, tmdb_score)|> stargazer(type = "text")
 ```
@@ -269,7 +266,7 @@ bad_movies <- subset(datasetnetflix, imdb_score <= 4.4 & tmdb_score <= 4.4)
 #bad_movies %>% group_by(id) %>% summarise_at(vars())
 
 ```
-The data are also rich in what my superiors should not do. They should be careful with works that were produced by single countries only. There, seems to be especially bad movies and shows coming from India and the US, since the cumulative runtime exceeds 25000 hourse for India and 15.000hours for the US.. However, these are most likely also two very high producing countries. It is also apparent from the bad movie data that most bad movies do not have an age certificaiton. Most are available for India (PG-13) and the US (R) and Japan (TV-PG).
+The data are also rich in what my superiors should not do. They should be careful with works that were produced by single countries only. There, seems to be especially bad movies and shows coming from India and the US, since the cumulative runtime exceeds 25000 hours for India and 15.000 hours for the US.. However, these are most likely also two very high producing countries. It is also apparent from the bad movie data that most bad movies do not have an age certificaiton. Most are available for India (PG-13) and the US (R) and Japan (TV-PG).
 
 
 ```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Bad movies.\\label{Figure2}", fig.ext = 'png', fig.height = 5, fig.width = 7}
@@ -281,4 +278,10 @@ whatworksnot
 
 ```
 
-Looking at the graph with the bad movies with low ratings we can see where they were produced. Interestingly, the worst movies were produced by single countries and not by co-production.
+Looking at the graph with the bad movies with low ratings we can see where they were produced. Interestingly, the worst movies were produced by single countries and not by co-productions.
+
+
+
+
+Thank you very much for reading the report. 
+Best, EVS
