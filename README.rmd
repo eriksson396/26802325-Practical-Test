@@ -140,6 +140,7 @@ g4
 
 
 It am sure that my high school friend is convinced about my graphs and will stay in beautiful South Africa. 
+
 # Question 3 Solution
 ```{r}
 
@@ -160,7 +161,7 @@ atp_matches_2022 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/
 View(atp_matches_2022)
 ```
 
-# Overview.
+## Overview
 
 
 The great function \textit{Data Collating} does not work for the whole data folder due to the error message: "Error in `bind_rows()`:
