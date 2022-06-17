@@ -10,7 +10,7 @@ This is the outline of my solution for the data science practical. This file wil
 Under images I saved my two main plots for Question 1, as there was a knitting problem. Please Check the images folder for the first task.
 
 
-```{r}
+```{r, results='hide'}
 
 #rm(list = ls()) # Clean your environment:
 gc() # garbage collection - It can be useful to call gc after a large object has been removed, as this may prompt R to return memory to the operating system.
@@ -154,9 +154,9 @@ playerranking <- merge(datcolat1,datcolatplayers,by="player_id")
 #datcolat2 <- Data_Collating(Datroot = "data/Tennis_single_atp/")   
 # library(readr)
 atp_matches_2000 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2000.csv")
-View(atp_matches_2000)
+#View(atp_matches_2000)
 atp_matches_2022 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2022.csv")
-View(atp_matches_2022)
+#View(atp_matches_2022)
 ```
 
 ## Overview

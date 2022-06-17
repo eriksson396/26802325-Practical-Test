@@ -9,13 +9,6 @@ knitting problem. Please Check the images folder for the first task.
 ``` r
 #rm(list = ls()) # Clean your environment:
 gc() # garbage collection - It can be useful to call gc after a large object has been removed, as this may prompt R to return memory to the operating system.
-```
-
-    ##          used (Mb) gc trigger (Mb) max used (Mb)
-    ## Ncells 444816 23.8     948980 50.7   643845 34.4
-    ## Vcells 793906  6.1    8388608 64.0  1649465 12.6
-
-``` r
 library(tidyverse)
 ```
 
@@ -248,7 +241,7 @@ atp_matches_2000 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/
     ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-View(atp_matches_2000)
+#View(atp_matches_2000)
 atp_matches_2022 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Science Methods/26802325/Solution/Q3/data/Tennis/atp_matches_2022.csv")
 ```
 
@@ -262,7 +255,7 @@ atp_matches_2022 <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/
     ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-View(atp_matches_2022)
+#View(atp_matches_2022)
 ```
 
 ## Overview
