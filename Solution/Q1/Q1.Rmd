@@ -16,14 +16,7 @@ output:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
     self_contained: TRUE
 abstract: |
-    This is an abstract. Much can be written here. Uncomment this line to go without an abstract.
-    Abstracts have no spaces, but can have bullets.
-
-    Bullets can be created as follows
-
-    + You can add bullets, but do not add colons please.
-
-    + Line breaks are also not permitted.
+    Covid is really bad.
 
 ---
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
@@ -44,8 +37,6 @@ list.files('..//Q1/code/', full.names = T, recursive = T) %>% as.list() %>% walk
     deaths_cause <- read.csv(glue::glue("{Loc}Deaths_by_cause.csv"))
     owid_data <- read.csv(glue::glue("{Loc}owid-covid-data.csv"))
    
-    
-    
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
@@ -69,7 +60,7 @@ continents <- owid_data[owid_data$iso_code %in% c("OWID_AFR", "OWID_ASI", "OWID_
 gg <- cases_per_region(continents,  xaxis_size = 5, xaxis_rows = 3)
 gg
 ```
-We can see that as of this week Africa had by far the fewest total cases compared to the other continents in the dataframe. Less than 15 Million COVID cases
+We can see that as of this week Africa had by far the fewest total cases compared to the other continents in the dataframe. Less than 15 Million COVID cases, where as Other regions like the US and Europe and Asia had more than 100 million cases or well above.  But obviously this has multiple reasons like different populations sizes and testing capacities.
 
 
 
@@ -77,7 +68,7 @@ We can see that as of this week Africa had by far the fewest total cases compare
 ggg <- deaths_per_region(continents,  xaxis_size = 5, xaxis_rows = 3)
 ggg
 ```
-We can further see that this is also reflected in the deaths per region Africa is the only continent with less than 500,000 deaths related to COvid while all other continents had at least 1 Million so far.
+We can further see that this is also reflected in the deaths per region Africa is the only continent with less than 500,000 deaths related to COvid while all other continents had at least 1 Million so far. There is definetely a corrleation between cases and total deaths in the regions. 
 
 
 ```{r}
@@ -102,16 +93,3 @@ unique(owid_data$icu_patients)
 
 
 
-
-# Overview
-
-
-
-For the following, I used my discretion and added some further insight into the fruit referncing exercise. This could've been a plot, but let's practice referencing in text.
-
-Spanish wines have far greater references to fruit, at `r round(N_Refs_Fruit_spain*100, 3)`%  of references mentioning fruits, compared to 
-`r round(N_Refs_Fruit*100, 2)`% of reviews for `r glue::glue_collapse( CountryList[!grepl("Spain", CountryList)], sep = ", ", last = " and ")`.
-
-### Referencing certain terms
-
-Some text some text some text

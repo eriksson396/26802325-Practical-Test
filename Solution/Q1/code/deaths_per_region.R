@@ -11,5 +11,5 @@ continents <- continents |> mutate(across(contains('date'), ymd))
         geom_line(aes(x = date, y = total_deaths, color = iso_code), size = 1, alpha = 0.8) +
         ggtitle(label = "Covid deaths by regions February 2020 - June 15th 2022") + labs(x = "", y = "total deaths") + theme_classic() +
         scale_x_date() + scale_y_continuous(labels = comma)
-
+    ggg
 }

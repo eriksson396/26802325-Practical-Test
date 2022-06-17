@@ -17,13 +17,7 @@ hosp_ICU <- function(owid_data, xaxis_size = 5, xaxis_rows = 3){
         ggplot() +
         geom_line(aes(x = date, y = hospital_beds_per_thousand, color = continent), size = 1, alpha = 0.8) +
         ggtitle(label = "Hospitalisation capacity development") + labs(x = "", y = "capacity") + theme_classic() +
-        scale_x_date()+
+        scale_x_date()
    # owid_data <- transform(owid_data, Lagged_ICU=c(icu_patients_per_million[-1],NA))
-
-
-
-
-class(hospitality_ICU$date)
-
 
 }

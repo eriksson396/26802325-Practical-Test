@@ -1,7 +1,7 @@
 ---
-title: "Paged HTML Document"
-author: "NF Katzke"
-date: "November 2021"
+title: "Great Tennis players"
+author: "Erik Schulte"
+date: "June 17th 2022"
 # date: "`r Sys.Date()`"
 bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
 output:
@@ -16,14 +16,7 @@ output:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
     self_contained: TRUE
 abstract: |
-    This is an abstract. Much can be written here. Uncomment this line to go without an abstract.
-    Abstracts have no spaces, but can have bullets.
-
-    Bullets can be created as follows
-
-    + You can add bullets, but do not add colons please.
-
-    + Line breaks are also not permitted.
+   What determines success in tennis?
 
 ---
 
@@ -44,29 +37,22 @@ datcolat1 <- rename(datcolat1, player_id = player)
 #now matched players and the ranking....
 playerranking <- merge(datcolat1,datcolatplayers,by="player_id")
 
-datcolat2 <- Data_Collating(Datroot = "data/Tennis_single_atp/")   
+#datcolat2 <- Data_Collating(Datroot = "data/Tennis_single_atp/")   
 
 
 
 ####atp tournaments...
 
-datcolat <- Data_Collating(Datroot = "data/Tennis/") 
+#datcolat <- Data_Collating(Datroot = "data/Tennis/") 
 
 
 ```
 
-
-# Overview
-
-In this report, we look at what Sommeliers prefer globally, and specifically the frequency with which references to fruity flavours are made.
-
-Important note - some of the chunks take long to build. You can add cache=TRUE to the top part of a chunk - which means unless you adjust the chunk's code in any way, it will save the output and load it quickly. This makes building your pdf quicker.
+# Overview.
 
 
-We will also consider the local wine reviews from two prominent critics.
+The great function \textit{Data Collating} does not work for the whole data folder due to the error message: "Error in `bind_rows()`:
+! Can't combine `winner_seed` <double> and `winner_seed` <character>.
+Run `rlang::last_error()` to see where the error occurred."
 
-### Fruit reference count
-
-In order to get insight into how often fruits are mentioned in reviews, and also which fruits are mentioned most - we collated a list of fruits and sought to identify the ....
-
-We see that Plums are most referenced, with critics in Spain most regularly referencing fruits in their reviews:
+Therefore, I tried to apply to parts of the csv files that may have a similar internal structure. Indeed, it works for the ranking files which also have a player id variable. The player csv file, which contains more than 50.000 tennis players with id's can then be merged with the ranking, which I did.

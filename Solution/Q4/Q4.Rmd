@@ -3,7 +3,7 @@
 # Remove comments and add values where applicable.
 # The descriptions below should be self-explanatory
 
-title: "Data Science exam: Question 4"
+title: "Data Science exam: Question 4 (Netflix)"
 #subtitle: "This will appear as Right Header"
 
 documentclass: "elsarticle"
@@ -114,8 +114,6 @@ credits <- read_csv("~/ownCloud/Uni Göttingen/Stellenbosch University/Data Scie
 
 #now matched id of both ....
 datasetnetflix <- merge(titles, credits, by="id")
-
-
 ```
 
 
@@ -125,15 +123,13 @@ datasetnetflix <- merge(titles, credits, by="id")
 
 # Introduction \label{Introduction}
 
-You are welcome to add some sort of an introduction here. Spend 5 minutes detailing the purpose here, e.g.
-
-
+Both datasets have a common identifier by which it can be knitted. I merge the two dataset and perform the following analysis. First, I present a table with some summary statistic about the newly merged dataset.
 
 
 ```{r}
-summary(datasetnetflix)
-summary
-summary
+# summary(datasetnetflix)
+# summary
+# summary
 library(stargazer)
 
 datasetnetflix |> select(release_year, runtime, seasons, imdb_score, imdb_votes, tmdb_popularity, tmdb_score)|> stargazer(type = "text")
@@ -147,40 +143,38 @@ IMDB scores range from 1.5 to 9.5, the average rating of all the movies containe
 
 For the tmb score, there the rating scale ranges from 1 to 10 and the average rating is slighly higher with 6.685.
 
+# What are good movies?
+
 ```{r}
 #data wrangling for plot 1
 directors <- subset(datasetnetflix, role == "DIRECTOR")
 #this gives a dataframe with movies with directors that got a rating of both scores above 8
 topdirector <- subset(datasetnetflix, role == "DIRECTOR" & imdb_score >= 8.4 & tmdb_score >= 8.4)
 ```
-
+First, I looks at specific directors that did well, specifically those who got ratings from the Internet Movie Database and the TMDB score of higher than 8.4. 8.4 was choosen arbitrarily to have just the right amount of observations in the graph. 
 
 ```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Good movies.\\label{Figure1}", fig.ext = 'png', fig.height = 5, fig.width = 7}
 #plot the scores by director, calculate the average score by direcor
 #runtime by genre
 #rating by genre.
 
-
-  # Source the plot with a function, and then print it as below.
-    # Going through the function, you will note that I'm able to source other functions in the code folder in these functions too.
-# That's the beauty of centralizing your functions and loading it in the top.
-
   whatworks <-
     plot1_netflix(topdirector, xaxis_size = 5, xaxis_rows = 3)
     
 whatworks
-
-
 ```
 
+We can see from graph 1 that there are a few directors that did really well. There is also a lot of variation in the runtime from very short shows with less than 30 minutes by the Director He Xiaofeng or rather long shows by Shin Won-ho which take more than 150 minutes. More of the good ratings are allocated towards shows rather than movies. I would recommend my superiors into looking into the works of the Directors I found. 
+
+# What are bad movies?
 ```{r}
 #data wrangling bad movies
 bad_movies <- subset(datasetnetflix, imdb_score <= 4.4 & tmdb_score <= 4.4)
-distinct(bad_movies)
-bad_movies %>% group_by(id) %>% summarise_at(vars())
+#distinct(bad_movies)
+#bad_movies %>% group_by(id) %>% summarise_at(vars())
 
 ```
-
+The data are also rich in what my superiors should not do. They should be careful with works that were produced by single countries only. There, seems to be especially bad movies and shows coming from India and the US, since the cumulative runtime exceeds 25000 hourse for India and 15.000hours for the US.. However, these are most likely also two very high producing countries. It is also apparent from the bad movie data that most bad movies do not have an age certificaiton. Most are available for India (PG-13) and the US (R) and Japan (TV-PG).
 
 
 ```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Bad movies.\\label{Figure2}", fig.ext = 'png', fig.height = 5, fig.width = 7}
@@ -199,41 +193,3 @@ Looking at the graph with the bad movies with low ratings we can see where they 
 
 
 
-
-
-Look at the README.txt file and maybe give some background - especially also in understanding the definition of the variables.
-
-Notice that for the below plots I created a parameters to play around with xaxis labels.
-
-
-```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Happiness Ladder.\\label{Figure1}", fig.ext = 'png', fig.height = 5, fig.width = 7}
-
-  # Source the plot with a function, and then print it as below.
-    # Going through the function, you will note that I'm able to source other functions in the code folder in these functions too.
-# That's the beauty of centralizing your functions and loading it in the top.
-
-  g <-
-    Error_bar_plot(datcolat, xaxis_size = 5, xaxis_rows = 3)
-    
-g
-
-```
-
-\newpage
-
-Let's start a newpage here, just because. 
-
-```{r,  warning =  FALSE, fig.align = 'center', fig.cap = "Happiness Ladder.\\label{Figure2}", fig.ext = 'png', fig.height = 6, fig.width = 6}
-
-  # Why not make titles and subtitles parameters?
-
-  g <-
-    Barplot_breakdown_Happy_Contributors(datcolat, Title = "Barplot making up the ladder", Subtitle = "Look at the colours - wow.", xaxis_size = 5, xaxis_rows = 3)
-    
-g
-
-```
-
-Try sprucing up the above figures even more, as well as adding some interpretation of the figures here.
-
-As you can see from Figure \ref{Figure1}, happiness is not perfectly correlated with life expectancy. Maybe posit some theory here and reference a paper to show that you can do this as well. If you do that, just keep in the bibliography information of course - as I didn't cite anyone here, I omitted it.
